@@ -221,7 +221,7 @@ export default function Feed() {
                   {/* Professional header and meta BELOW the image (Instagram-like) */}
                   <div className="flex items-center justify-between p-4">
                     <div className="flex items-center gap-3">
-                      <Link to={`/p/${post.professional.id}`} className="flex items-center gap-3">
+                      <Link href={`/p/${post.professional.id}`} className="flex items-center gap-3">
                         <Avatar className="w-11 h-11">
                           <AvatarImage src={post.professional.avatar_url || undefined} alt={post.professional.name} />
                           <AvatarFallback className="text-sm font-bold gradient-primary text-white">
