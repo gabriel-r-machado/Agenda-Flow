@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 
 
-export function DebugPage() {
+export default function DebugPage() {
   const { profile, loading, isTrialActive, isSubscriptionActive, getTrialDaysLeft } = useProfile();
   const { user } = useAuth();
   const router = useRouter();
