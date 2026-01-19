@@ -286,7 +286,7 @@ export async function rescheduleAppointmentAction(
       }
     );
 
-    const { data, error } = await supabase.rpc('remarcar_agendamento', {
+    const { data, error } = await (supabase.rpc as any)('remarcar_agendamento', {
       p_agendamento_id: agendamentoId,
       p_novo_horario:
         novaData instanceof Date ? novaData.toISOString() : new Date(novaData).toISOString(),
@@ -342,7 +342,7 @@ export async function criarAppointmentAction(
       }
     );
 
-    const { data, error } = await supabase.rpc('criar_agendamento', {
+    const { data, error } = await (supabase.rpc as any)('criar_agendamento', {
       p_cliente_nome: nome,
       p_cliente_telefone: telefone,
       p_servico_id: servicoId,

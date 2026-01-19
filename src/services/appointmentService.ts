@@ -166,7 +166,7 @@ class AppointmentService {
       // All validations passed - create the appointment via RPC to enforce DB-side rules
       const p_date_time = new Date(`${validated.appointmentDate}T${validated.appointmentTime}`).toISOString();
 
-      const { data: rpcData, error: rpcError } = await supabase.rpc('criar_agendamento', {
+      const { data: rpcData, error: rpcError } = await (supabase.rpc as any)('criar_agendamento', {
         p_cliente_nome: validated.clientName,
         p_cliente_telefone: validated.clientPhone,
         p_servico_id: validated.serviceId,

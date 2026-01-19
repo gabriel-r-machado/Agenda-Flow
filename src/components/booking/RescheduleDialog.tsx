@@ -228,7 +228,7 @@ export function RescheduleDialog({
       const timeStr = selectedTime;
       const localTimestamp = `${dateStr}T${timeStr}:00`;
 
-      const { data: rpcData, error: rpcError } = await supabase.rpc('remarcar_agendamento', {
+      const { data: rpcData, error: rpcError } = await (supabase.rpc as any)('remarcar_agendamento', {
         p_agendamento_id: foundAppointment.id,
         p_novo_horario: localTimestamp,
         p_telefone_cliente: phone.replace(/\D/g, ''),

@@ -280,7 +280,7 @@ export default function PublicProfile({ params }: { params: Promise<{ profileId:
       const timeStr = selectedTime;
       const localTimestamp = `${dateStr}T${timeStr}:00`;
 
-      const { data, error } = await supabase.rpc('criar_agendamento', {
+      const { data, error } = await (supabase.rpc as any)('criar_agendamento', {
         p_cliente_nome: form.name,
         p_cliente_telefone: form.phone.replace(/\D/g, ''),
         p_servico_id: selectedService.id,
