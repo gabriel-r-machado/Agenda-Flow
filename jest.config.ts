@@ -45,6 +45,12 @@ const config: Config = {
   
   // Limite de cobertura para módulos específicos (core business logic)
   coverageThreshold: {
+    global: {
+      branches: 50,
+      functions: 50,
+      lines: 50,
+      statements: 50,
+    },
     'src/core/**/*.ts': {
       branches: 90,
       functions: 90,
