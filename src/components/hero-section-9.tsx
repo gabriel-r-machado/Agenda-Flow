@@ -23,7 +23,7 @@ export const HeroSection = () => {
                         <div className="flex flex-wrap items-center justify-between gap-6 py-3 lg:gap-0 lg:py-4">
                             <div className="flex w-full justify-between lg:w-auto">
                                 <Link
-                                    to="/"
+                                    href="/"
                                     aria-label="home"
                                     className="flex items-center space-x-2">
                                     <Logo />
@@ -44,7 +44,7 @@ export const HeroSection = () => {
                                         {menuItems.map((item, index) => (
                                                     <li key={index}>
                                                         <Link
-                                                            to={item.href}
+                                                            href={item.href}
                                                             className="text-muted-foreground hover:text-accent-foreground block duration-150">
                                                             <span>{item.name}</span>
                                                         </Link>
@@ -58,14 +58,14 @@ export const HeroSection = () => {
                                         asChild
                                         variant="outline"
                                         size="sm">
-                                        <Link to="#">
+                                        <Link href="#">
                                             <span>Login</span>
                                         </Link>
                                     </Button>
                                     <Button
                                         asChild
                                         size="sm">
-                                        <Link to="#">
+                                        <Link href="#">
                                             <span>Login</span>
                                         </Link>
                                     </Button>
@@ -94,7 +94,7 @@ export const HeroSection = () => {
                             <Button
                                 asChild
                                 size="lg">
-                                <Link to="#">
+                                <Link href="#">
                                     <span className="btn-label">Start Building</span>
                                 </Link>
                             </Button>

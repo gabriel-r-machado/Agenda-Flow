@@ -67,7 +67,7 @@ export async function updateAppointmentAction(
 ) {
   try {
     // 1. SECURITY: Validate session
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
@@ -147,7 +147,7 @@ export async function deleteAppointmentAction(
 ) {
   try {
     // 1. SECURITY: Validate session
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
@@ -218,7 +218,7 @@ export async function getAppointmentsAction(professionalId: string, filters?: {
 }) {
   try {
     // 1. SECURITY: Validate session
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,

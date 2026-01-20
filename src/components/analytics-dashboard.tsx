@@ -71,7 +71,8 @@ const analyticsData = [
 ];
 
 // --- CUSTOM TOOLTIP ---
-const CustomTooltip = ({ active, payload }) => {
+const CustomTooltip = (props: any) => {
+  const { active, payload } = props;
   if (active && payload && payload.length) {
     return (
       <div

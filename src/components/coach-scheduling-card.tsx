@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion, AnimatePresence } from "framer-motion";
+import { motion, useReducedMotion, AnimatePresence, Variants } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import { ChevronLeft, ChevronRight, ChevronDown, Star } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -204,7 +204,7 @@ export function CoachSchedulingCard({
   };
 
   // Animation variants
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -215,7 +215,7 @@ export function CoachSchedulingCard({
     }
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { 
       opacity: 0, 
       x: -25,
@@ -228,7 +228,7 @@ export function CoachSchedulingCard({
       scale: 1,
       filter: "blur(0px)",
       transition: {
-        type: "spring",
+        type: 'spring',
         stiffness: 400,
         damping: 28,
         mass: 0.6,
@@ -236,13 +236,13 @@ export function CoachSchedulingCard({
     },
   };
 
-  const timeSlotVariants = {
+  const timeSlotVariants: Variants = {
     hidden: { opacity: 0, scale: 0.8 },
     visible: {
       opacity: 1,
       scale: 1,
       transition: {
-        type: "spring",
+        type: 'spring',
         stiffness: 400,
         damping: 25,
       }
@@ -251,7 +251,7 @@ export function CoachSchedulingCard({
 
   return (
     <motion.div
-      variants={shouldAnimate ? containerVariants : {}}
+      variants={shouldAnimate ? containerVariants : undefined}
       initial={shouldAnimate ? "hidden" : "visible"}
       animate="visible"
       className={cn(
@@ -278,7 +278,7 @@ export function CoachSchedulingCard({
         >
       {/* Coach Profile Header */}
       <motion.div 
-        variants={shouldAnimate ? itemVariants : {}}
+        variants={shouldAnimate ? itemVariants : undefined}
         className="p-6 pb-6"
       >
         <div className="flex items-start justify-between gap-6">
@@ -368,7 +368,7 @@ export function CoachSchedulingCard({
 
       {/* Location Selector */}
       <motion.div 
-        variants={shouldAnimate ? itemVariants : {}}
+        variants={shouldAnimate ? itemVariants : undefined}
         className="px-6 pb-4 relative z-50"
         style={{ overflow: 'visible' }}
       >
@@ -431,13 +431,13 @@ export function CoachSchedulingCard({
 
       {/* Separator */}
       <motion.div 
-        variants={shouldAnimate ? itemVariants : {}}
+        variants={shouldAnimate ? itemVariants : undefined}
         className="mx-6 border-t border-border/50"
       />
 
       {/* Week Navigation */}
       <motion.div 
-        variants={shouldAnimate ? itemVariants : {}}
+        variants={shouldAnimate ? itemVariants : undefined}
         className="p-6 pb-4"
       >
         <div className="flex items-center justify-between">
@@ -475,13 +475,13 @@ export function CoachSchedulingCard({
 
       {/* Daily Schedule */}
       <motion.div 
-        variants={shouldAnimate ? itemVariants : {}}
+        variants={shouldAnimate ? itemVariants : undefined}
         className="px-6 pb-6 space-y-4"
       >
         {weekSchedule.map((day) => (
-          <motion.div
+            <motion.div
             key={day.date}
-            variants={shouldAnimate ? itemVariants : {}}
+            variants={shouldAnimate ? itemVariants : undefined}
             className="space-y-3"
           >
             {/* Day Header */}
@@ -500,14 +500,14 @@ export function CoachSchedulingCard({
 
             {/* Time Slots */}
             {day.hasAvailability && (
-              <motion.div 
-                variants={shouldAnimate ? containerVariants : {}}
+                <motion.div 
+                variants={shouldAnimate ? containerVariants : undefined}
                 className="flex flex-wrap gap-2"
               >
                 {day.slots.map((slot) => (
                                      <motion.button
-                     key={`${day.date}-${slot.time}`}
-                     variants={shouldAnimate ? timeSlotVariants : {}}
+                                     key={`${day.date}-${slot.time}`}
+                                     variants={shouldAnimate ? timeSlotVariants : undefined}
                      whileHover={shouldAnimate && slot.available ? {
                        scale: 1.05,
                        y: -2,
@@ -535,7 +535,7 @@ export function CoachSchedulingCard({
 
       {/* Bottom Actions */}
       <motion.div 
-        variants={shouldAnimate ? itemVariants : {}}
+        variants={shouldAnimate ? itemVariants : undefined}
         className="border-t border-border/50 p-6"
       >
                  <div className="flex gap-3">

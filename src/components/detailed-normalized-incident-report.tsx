@@ -115,16 +115,19 @@ const initialMultiDateData: ChartSeries[] = [
 ];
 
 const validateChartData = (data: ChartSeries[]): ChartDataTypes[] => {
-  return data.map(series => ({
-    ...series,
-    data: series.data.map(item => ({
-      ...item,
-      data: (typeof item.data !== 'number' || isNaN(item.data)) ? 0 : item.data,
+  // Normalize data shape: convert Date keys to numeric timestamps and ensure numeric values
+  const normalized = data.map((series) => ({
+    key: series.key,
+    data: series.data.map((item) => ({
+      key: item.key instanceof Date ? item.key.getTime() : typeof item.key === 'string' ? Date.parse(item.key) : Number(item.key),
+      data: typeof item.data !== 'number' || isNaN(item.data) ? 0 : item.data,
     })),
   }));
+
+  return normalized as unknown as ChartDataTypes[];
 };
 
-const validatedChartData = validateChartData(initialMultiDateData);
+const validatedChartData: any = validateChartData(initialMultiDateData);
 
 const METRICS_DATA: MetricInfo[] = [
   {

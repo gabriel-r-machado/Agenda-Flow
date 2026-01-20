@@ -128,7 +128,7 @@ export default function AuthExample() {
                                 Lembrar-me
                             </label>
                         </div>
-                        <Link to="#" className="text-sm hover:text-foreground transition-colors">
+                        <Link href="#" className="text-sm hover:text-foreground transition-colors">
                             Esqueci a senha
                         </Link>
                     </div>
@@ -144,7 +144,7 @@ export default function AuthExample() {
                     {/* Sign Up Link */}
                     <p className="text-muted-foreground text-sm mt-6">
                         Não tem conta?{" "}
-                        <Link to="/auth" className="text-green-600 hover:text-green-700 font-medium transition-colors">
+                        <Link href="/auth" className="text-green-600 hover:text-green-700 font-medium transition-colors">
                             Criar conta grátis
                         </Link>
                     </p>

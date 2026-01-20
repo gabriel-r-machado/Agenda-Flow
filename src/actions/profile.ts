@@ -20,7 +20,7 @@ export async function updateProfileAction(
 ): Promise<ApiResponse<ProfileResponse>> {
   try {
     // 1. SECURITY: Validate session
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
@@ -200,6 +200,19 @@ export async function getProfileAction(
       metadata: { identifier, bySlug },
     });
 
+    // Create anon client for public profile fetching
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
+      {
+        cookies: {
+          get: () => undefined,
+          set: () => {},
+          remove: () => {},
+        },
+      }
+    );
+
     let query = supabase
       .from('profiles')
       .select(
@@ -273,7 +286,7 @@ export async function rescheduleAppointmentAction(
   telefoneCliente: string
 ): Promise<ApiResponse<any>> {
   try {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
@@ -302,7 +315,7 @@ export async function rescheduleAppointmentAction(
       return {
         success: false,
         error: {
-          code: ErrorCodes.VALIDATION_ERROR || ErrorCodes.AUTH_ERROR,
+          code: ErrorCodes.VALIDATION_ERROR,
           message: 'Erro ao remarcar: telefone inválido ou agendamento não encontrado.',
         },
       };
@@ -329,7 +342,7 @@ export async function criarAppointmentAction(
   dataHorario: string | Date
 ): Promise<ApiResponse<any>> {
   try {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
@@ -359,7 +372,7 @@ export async function criarAppointmentAction(
       return {
         success: false,
         error: {
-          code: ErrorCodes.VALIDATION_ERROR || ErrorCodes.AUTH_ERROR,
+          code: ErrorCodes.VALIDATION_ERROR,
           message: error.message || 'Erro ao criar agendamento.',
         },
       };

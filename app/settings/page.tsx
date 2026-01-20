@@ -1,7 +1,6 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useSearchParams } from 'next/navigation';
 import { useEffect, useState, useCallback, useRef } from 'react';
 
 import { useAuth } from '@/hooks/useAuth';
@@ -88,7 +87,11 @@ export default function Settings() {
     is_professional: false,
   });
   const router = useRouter();
-  const searchParams = useSearchParams();
+
+  const getParam = (key: string) => {
+    if (typeof window === 'undefined') return null;
+    return new URLSearchParams(window.location.search).get(key);
+  };
   const plansRef = useRef<HTMLDivElement | null>(null);
 
   const checkSubscription = useCallback(async (force = false) => {
@@ -146,20 +149,20 @@ export default function Settings() {
 
   // Handle success/cancel from Stripe checkout
   useEffect(() => {
-    if (searchParams.get('success') === 'true') {
+    if (getParam('success') === 'true') {
       toast.success('Assinatura realizada com sucesso!');
       hasCheckedSubscription.current = false;
       checkSubscription(true);
       router.replace('/settings');
-    } else if (searchParams.get('canceled') === 'true') {
+    } else if (getParam('canceled') === 'true') {
       toast.info('Checkout cancelado');
       router.replace('/settings');
     }
-  }, [searchParams, router, checkSubscription]);
+  }, [router, checkSubscription]);
 
   // Handle section query param to switch tabs
   useEffect(() => {
-    const section = searchParams.get('section');
+    const section = getParam('section');
     if (section === 'subscription') {
       setActiveTab('subscription');
     } else if (section === 'gallery') {
@@ -169,16 +172,16 @@ export default function Settings() {
     } else if (section === 'profile') {
       setActiveTab('profile');
     }
-  }, [searchParams]);
+  }, []);
 
   // If the URL requests the plans section, scroll to it
   useEffect(() => {
-    const section = searchParams.get('section');
+    const section = getParam('section');
     if (section === 'plans' && plansRef.current) {
       // small timeout to ensure layout rendered
       setTimeout(() => plansRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 150);
     }
-  }, [searchParams]);
+  }, []);
 
   useEffect(() => {
     if (profile) {

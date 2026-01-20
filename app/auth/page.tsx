@@ -1,7 +1,7 @@
-'use client';
+ 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
@@ -263,7 +263,6 @@ export default function Auth() {
   const [isPurplePeeking, setIsPurplePeeking] = useState(false);
   const { signIn, signUp, user, signInWithGoogle } = useAuth();
   const router = useRouter();
-  const searchParams = useSearchParams();
   const purpleRef = useRef<HTMLDivElement>(null);
   const blackRef = useRef<HTMLDivElement>(null);
   const yellowRef = useRef<HTMLDivElement>(null);
@@ -271,13 +270,17 @@ export default function Auth() {
 
   useEffect(() => {
     if (user) {
-      const redirectTo = searchParams.get('redirectTo');
-      const destination = redirectTo && redirectTo.startsWith('/') 
-        ? redirectTo 
+      let redirectTo: string | null = null;
+      if (typeof window !== 'undefined') {
+        const params = new URLSearchParams(window.location.search);
+        redirectTo = params.get('redirectTo');
+      }
+      const destination = redirectTo && redirectTo.startsWith('/')
+        ? redirectTo
         : '/dashboard';
       router.push(destination);
     }
-  }, [user, router, searchParams]);
+  }, [user, router]);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { motion, useMotionValue, useTransform, animate } from "framer-motion";
+import { motion, useMotionValue, useTransform, animate, Transition } from "framer-motion";
 import { Filter, Users, Clock, Zap, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils"; // Your utility for merging class names
 import { Button } from "@/components/ui/button"; // Assuming you have a Button component
@@ -84,7 +84,7 @@ export const MarketingDashboard = React.forwardRef<
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
   };
 
-  const hoverTransition = { type: "spring", stiffness: 300, damping: 15 };
+  const hoverTransition: Transition = { type: 'spring', stiffness: 300, damping: 15 };
 
   return (
     <motion.div

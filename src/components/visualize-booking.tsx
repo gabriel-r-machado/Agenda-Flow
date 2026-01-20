@@ -93,7 +93,7 @@ const CalendarGrid: React.FC<{ onHover: (day: string | null) => void }> = ({
 
 const InteractiveCalendar = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
+  React.ComponentProps<typeof motion.div>
 >(({ className, ...props }, ref) => {
   const [moreView, setMoreView] = useState(false);
   const [hoveredDay, setHoveredDay] = useState<string | null>(null);

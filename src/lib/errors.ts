@@ -98,6 +98,12 @@ export const ErrorCodes = {
   SUBSCRIPTION_LIMIT_REACHED: 'SUBS_001',
   SUBSCRIPTION_FEATURE_LOCKED: 'SUBS_002',
   
+  // Auth errors
+  AUTH_ERROR: 'AUTH_001',
+  
+  // Validation errors
+  VALIDATION_ERROR: 'VALIDATION_001',
+  
   // Generic errors
   UNKNOWN_ERROR: 'ERR_UNKNOWN',
 } as const;
@@ -123,6 +129,9 @@ const ERROR_MESSAGES: Record<string, string> = {
   
   [ErrorCodes.SUBSCRIPTION_LIMIT_REACHED]: 'Você atingiu o limite do seu plano. Faça upgrade!',
   [ErrorCodes.SUBSCRIPTION_FEATURE_LOCKED]: 'Esta funcionalidade está disponível apenas em planos superiores',
+  
+  [ErrorCodes.AUTH_ERROR]: 'Erro de autenticação. Faça login novamente.',
+  [ErrorCodes.VALIDATION_ERROR]: 'Dados inválidos. Verifique as informações e tente novamente.',
   
   [ErrorCodes.UNKNOWN_ERROR]: 'Ocorreu um erro inesperado. Tente novamente.',
 };

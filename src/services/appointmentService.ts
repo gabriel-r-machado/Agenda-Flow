@@ -70,16 +70,18 @@ class AppointmentService {
         .eq('professional_id', professionalId)
         .single();
 
-      if (serviceError || !service) {
+        if (serviceError || !service) {
         throw new NotFoundError('Serviço');
       }
 
-      if (!service.is_active) {
-        throw new BusinessRuleError(
-          'Este serviço não está mais disponível',
-          ErrorCodes.SERVICE_NOT_ACTIVE
-        );
-      }
+        const serviceData: any = service;
+
+        if (!serviceData.is_active) {
+          throw new BusinessRuleError(
+            'Este serviço não está mais disponível',
+            ErrorCodes.SERVICE_NOT_ACTIVE
+          );
+        }
 
       // Fetch existing appointments for conflict detection
       const { data: existingAppointments, error: fetchError } = await supabase
@@ -103,7 +105,7 @@ class AppointmentService {
       const newAppointment: Appointment = {
         date: validated.appointmentDate,
         time: validated.appointmentTime,
-        durationMinutes: service.duration_minutes,
+        durationMinutes: serviceData.duration_minutes,
       };
 
       // Validate: no time conflicts
@@ -136,7 +138,7 @@ class AppointmentService {
       validateWithinBusinessHours(newAppointment, availabilitySlots);
 
       // Fetch blocked exceptions
-      const { data: exceptions, error: exceptError } = await supabase
+      const { data: exceptions, error: exceptError } = await (supabase as any)
         .from('availability_exceptions')
         .select('exception_date, start_time, end_time, is_available')
         .eq('professional_id', professionalId)
