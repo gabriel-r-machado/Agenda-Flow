@@ -34,11 +34,12 @@ export interface BlockedException {
  * Business Rule: Cannot book appointments for past dates
  */
 export function validateNotPastDate(appointmentDate: string): void {
-  const selectedDate = new Date(appointmentDate);
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  
-  if (selectedDate < today) {
+  // Compare dates using local YYYY-MM-DD strings to avoid timezone issues
+  const pad = (n: number) => n.toString().padStart(2, '0');
+  const now = new Date();
+  const todayStr = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+
+  if (appointmentDate < todayStr) {
     throw new BusinessRuleError(
       'Não é possível agendar em datas passadas',
       ErrorCodes.BOOKING_PAST_DATE
@@ -83,8 +84,10 @@ export function validateWithinBusinessHours(
   appointment: Appointment,
   availability: AvailabilitySlot[]
 ): void {
-  const appointmentDate = new Date(appointment.date + 'T00:00:00');
-  const dayOfWeek = appointmentDate.getUTCDay();
+  // Parse date components and create a local Date to avoid UTC shifting
+  const [y, m, d] = appointment.date.split('-').map(Number);
+  const appointmentDate = new Date(y, m - 1, d);
+  const dayOfWeek = appointmentDate.getDay();
   
   // Find availability for this day of week
   const dayAvailability = availability.filter(slot => slot.dayOfWeek === dayOfWeek);
@@ -159,8 +162,9 @@ export function calculateAvailableTimeSlots(
   existingAppointments: Appointment[],
   blockedExceptions: BlockedException[]
 ): TimeSlot[] {
-  const appointmentDate = new Date(date + 'T00:00:00');
-  const dayOfWeek = appointmentDate.getUTCDay();
+  const [y, m, d] = date.split('-').map(Number);
+  const appointmentDate = new Date(y, m - 1, d);
+  const dayOfWeek = appointmentDate.getDay();
   
   // Get availability slots for this day
   const dayAvailability = availability.filter(slot => slot.dayOfWeek === dayOfWeek);

@@ -1,14 +1,17 @@
 import { criarAppointmentAction } from './profile';
 
 // Mock the modules used inside the server action
-jest.mock('@supabase/auth-helpers-nextjs', () => ({
+jest.mock('@supabase/ssr', () => ({
   createServerClient: jest.fn(() => ({
     rpc: jest.fn().mockResolvedValue({ data: { success: true, id: 'client-id' }, error: null }),
+    auth: {
+      getUser: jest.fn().mockResolvedValue({ data: { user: { id: 'test-user-id' } }, error: null }),
+    },
   })),
 }));
 
 jest.mock('next/headers', () => ({
-  cookies: () => ({ get: () => ({ value: 'fake' }) }),
+  cookies: jest.fn().mockResolvedValue({ get: jest.fn().mockReturnValue({ value: 'fake-session-token' }) }),
 }));
 
 describe('criarAppointmentAction', () => {
