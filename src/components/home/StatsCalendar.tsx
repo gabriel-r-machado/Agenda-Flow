@@ -53,7 +53,7 @@ const statsData: CalendarData[] = [
       {
         id: 1,
         name: "5.000+",
-        description: "Profissionais Ativos",
+        description: "Profissionais",
         icon: Users,
       },
     ],
@@ -63,7 +63,7 @@ const statsData: CalendarData[] = [
     events: [
       {
         id: 2,
-        name: "150.000+",
+        name: "15.000+",
         description: "Agendamentos/Mês",
         icon: Calendar,
       },
