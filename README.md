@@ -1,6 +1,6 @@
 # AgendaFlow
 
-[![Coverage: 99%](https://img.shields.io/badge/coverage-99%25%20(core)-brightgreen)](docs/TESTING.md) [![Next.js 16](https://img.shields.io/badge/Next.js-16-black)](https://nextjs.org/) [![TypeScript 5](https://img.shields.io/badge/TypeScript-5-blue)](https://www.typescriptlang.org/) [![Tested with Jest](https://img.shields.io/badge/tested_with-jest-99424f)](https://jestjs.io/) [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![Coverage: 99%](https://img.shields.io/badge/coverage-99%25%20(core)-brightgreen)](docs/TESTING.md) [![Next.js 16](https://img.shields.io/badge/Next.js-16-black)](https://nextjs.org/) [![TypeScript 5](https://img.shields.io/badge/TypeScript-5-blue)](https://www.typescriptlang.org/) [![Tested with Jest](https://img.shields.io/badge/tested_with-jest-99424f)](https://jestjs.io/) [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE.md)
 
 Scalable, production-oriented SaaS booking system built with Clean Architecture principles. This repository is a portfolio project demonstrating an enterprise-grade architecture: trade-offs and decisions are documented to keep domain rules testable, maintainable and framework-agnostic.
 
