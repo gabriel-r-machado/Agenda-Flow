@@ -76,4 +76,4 @@ npm run dev
 
 This repository is maintained as a portfolio project that reflects production-focused architectural decisions.
 
-Author: Gabriel Machado — GitHub: @gaahfrm — LinkedIn: gabrielmachado-se
+Author: Gabriel Machado — GitHub: @gabriel-r-machado — LinkedIn: gabrielmachado-se
