@@ -74,7 +74,15 @@ class AppointmentService {
         throw new NotFoundError('Serviço');
       }
 
-        const serviceData: any = service;
+        interface ServiceData {
+          id: string;
+          name: string;
+          duration_minutes: number;
+          price: number;
+          color: string | null;
+          is_active: boolean;
+        }
+        const serviceData = service as ServiceData;
 
         if (!serviceData.is_active) {
           throw new BusinessRuleError(
@@ -96,7 +104,12 @@ class AppointmentService {
       }
 
       // Transform to booking rules format
-      const appointments: Appointment[] = (existingAppointments || []).map((apt: any) => ({
+      interface ExistingAppointment {
+        appointment_date: string;
+        appointment_time: string;
+        services: { duration_minutes: number } | null;
+      }
+      const appointments: Appointment[] = (existingAppointments || []).map((apt: ExistingAppointment) => ({
         date: apt.appointment_date,
         time: apt.appointment_time,
         durationMinutes: apt.services?.duration_minutes || 30,
@@ -128,7 +141,12 @@ class AppointmentService {
         throw new DatabaseError('Erro ao verificar horário de funcionamento', availError);
       }
 
-      const availabilitySlots: AvailabilitySlot[] = (availability || []).map((slot: any) => ({
+      interface AvailabilityData {
+        day_of_week: number;
+        start_time: string;
+        end_time: string;
+      }
+      const availabilitySlots: AvailabilitySlot[] = (availability || []).map((slot: AvailabilityData) => ({
         dayOfWeek: slot.day_of_week,
         startTime: slot.start_time,
         endTime: slot.end_time,
@@ -138,7 +156,7 @@ class AppointmentService {
       validateWithinBusinessHours(newAppointment, availabilitySlots);
 
       // Fetch blocked exceptions
-      const { data: exceptions, error: exceptError } = await (supabase as any)
+      const { data: exceptions, error: exceptError } = await supabase
         .from('availability_exceptions')
         .select('exception_date, start_time, end_time, is_available')
         .eq('professional_id', professionalId)
@@ -150,10 +168,15 @@ class AppointmentService {
         });
       }
 
-      const blockedExceptions: BlockedException[] = (exceptions || []).map((ex: any) => ({
+      interface ExceptionData {
+        exception_date: string;
+        start_time: string | null;
+        end_time: string | null;
+      }
+      const blockedExceptions: BlockedException[] = (exceptions || []).map((ex: ExceptionData) => ({
         date: ex.exception_date,
-        startTime: ex.start_time,
-        endTime: ex.end_time,
+        startTime: ex.start_time || undefined,
+        endTime: ex.end_time || undefined,
       }));
 
       // Validate: not blocked
@@ -168,7 +191,7 @@ class AppointmentService {
       // All validations passed - create the appointment via RPC to enforce DB-side rules
       const p_date_time = new Date(`${validated.appointmentDate}T${validated.appointmentTime}`).toISOString();
 
-      const { data: rpcData, error: rpcError } = await (supabase.rpc as any)('criar_agendamento', {
+      const { data: rpcData, error: rpcError } = await supabase.rpc('criar_agendamento', {
         p_cliente_nome: validated.clientName,
         p_cliente_telefone: validated.clientPhone,
         p_servico_id: validated.serviceId,
@@ -299,7 +322,25 @@ class AppointmentService {
         throw new DatabaseError('Erro ao buscar agendamentos', error);
       }
 
-      const appointments: AppointmentResponse[] = (data || []).map((apt: any) =>
+      interface DbAppointment {
+        id: string;
+        client_name: string;
+        client_phone: string;
+        client_email: string | null;
+        appointment_date: string;
+        appointment_time: string;
+        status: 'pending' | 'confirmed' | 'cancelled' | 'completed';
+        notes: string | null;
+        created_at: string;
+        services: {
+          id: string;
+          name: string;
+          duration_minutes: number;
+          price: number;
+          color?: string;
+        };
+      }
+      const appointments: AppointmentResponse[] = (data || []).map((apt: DbAppointment) =>
         this.mapToAppointmentResponse(apt)
       );
 
@@ -332,7 +373,17 @@ class AppointmentService {
       });
 
       // Build update object dynamically
-      const updateData: any = {};
+      interface UpdateData {
+        client_name?: string;
+        client_phone?: string;
+        client_email?: string | null;
+        notes?: string | null;
+        status?: 'pending' | 'confirmed' | 'cancelled' | 'completed';
+        appointment_date?: string;
+        appointment_time?: string;
+        service_id?: string;
+      }
+      const updateData: UpdateData = {};
 
       if (validated.clientName) updateData.client_name = validated.clientName;
       if (validated.clientPhone) updateData.client_phone = validated.clientPhone;
@@ -463,7 +514,24 @@ class AppointmentService {
    * Maps database response to clean DTO
    * Isolates frontend from database schema changes
    */
-  private mapToAppointmentResponse(dbAppointment: any): AppointmentResponse {
+  private mapToAppointmentResponse(dbAppointment: {
+    id: string;
+    client_name: string;
+    client_phone: string;
+    client_email: string | null;
+    appointment_date: string;
+    appointment_time: string;
+    status: 'pending' | 'confirmed' | 'cancelled' | 'completed';
+    notes: string | null;
+    created_at: string;
+    services: {
+      id: string;
+      name: string;
+      duration_minutes: number;
+      price: number;
+      color?: string;
+    };
+  }): AppointmentResponse {
     return {
       id: dbAppointment.id,
       clientName: dbAppointment.client_name,

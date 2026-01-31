@@ -83,7 +83,21 @@ export async function updateProfileAction(
     });
 
     // 4. Build update object from validated input
-    const updateData: any = {};
+    interface UpdateData {
+      full_name?: string;
+      business_name?: string;
+      profile_slug?: string;
+      bio?: string;
+      phone?: string;
+      email?: string;
+      avatar_url?: string;
+      category?: string;
+      instagram_url?: string;
+      whatsapp_number?: string;
+      accepts_online_payment?: boolean;
+      booking_interval_minutes?: number;
+    }
+    const updateData: UpdateData = {};
     
     if (validated.fullName !== undefined) updateData.full_name = validated.fullName;
     if (validated.businessName !== undefined) updateData.business_name = validated.businessName;

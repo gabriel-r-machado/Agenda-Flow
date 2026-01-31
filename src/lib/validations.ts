@@ -34,10 +34,11 @@ export const futureDateSchema = z
   .string()
   .refine(
     (date) => {
-      const selectedDate = new Date(date);
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      return selectedDate >= today;
+      // Compare as strings to avoid timezone issues
+      const pad = (n: number) => n.toString().padStart(2, '0');
+      const now = new Date();
+      const todayStr = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+      return date >= todayStr;
     },
     { message: 'Data deve ser hoje ou no futuro' }
   );
