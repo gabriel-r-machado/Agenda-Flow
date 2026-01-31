@@ -12,9 +12,9 @@ AgendaFlow is a multi-tenant scheduling platform for service professionals (coac
 
 - Clean Architecture: domain rules live in `src/core` (no framework deps).
 - Deterministic scheduling: all dates stored/processed in UTC; UI performs local conversions.
-- High-confidence testing: critical domain logic covered with >99% unit test coverage.
+- High-confidence testing: critical domain logic covered with 99% unit test coverage.
 - DTOs (Zod): API contracts decoupled from persistence models.
-- Type-safe: TypeScript strict mode enabled, minimal `any` usage.
+- Type-safe: TypeScript 5 with progressive type safety improvements.
 - Server Actions: Next.js Server Actions are used as thin controllers.
 
 ## Architecture (high level)
@@ -65,12 +65,12 @@ npm run dev
 
 ## Tech stack
 
-- Next.js 16 (App Router)
-- TypeScript 5 (strict mode)
+- Next.js 16 (App Router + Turbopack)
+- TypeScript 5
 - Tailwind CSS + shadcn/ui
 - Supabase (Postgres + Auth)
 - Zod for validation
-- Jest for tests
+- Jest for tests (99% coverage on core business logic)
 
 ## Contributing & contact
 
