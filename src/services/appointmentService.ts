@@ -65,7 +65,7 @@ class AppointmentService {
       // Fetch service details to get duration
       const { data: service, error: serviceError } = await supabase
         .from('services')
-        .select('id, name, duration_minutes, price, color, is_active')
+        .select('id, name, duration_minutes, price, is_active')
         .eq('id', validated.serviceId)
         .eq('professional_id', professionalId)
         .single();
@@ -74,15 +74,7 @@ class AppointmentService {
         throw new NotFoundError('Serviço');
       }
 
-        interface ServiceData {
-          id: string;
-          name: string;
-          duration_minutes: number;
-          price: number;
-          color: string | null;
-          is_active: boolean;
-        }
-        const serviceData = service as ServiceData;
+        const serviceData = service as any;
 
         if (!serviceData.is_active) {
           throw new BusinessRuleError(
@@ -156,11 +148,13 @@ class AppointmentService {
       validateWithinBusinessHours(newAppointment, availabilitySlots);
 
       // Fetch blocked exceptions
-      const { data: exceptions, error: exceptError } = await supabase
+      const exceptionsResult: any = await supabase
         .from('availability_exceptions')
-        .select('exception_date, start_time, end_time, is_available')
+        .select('exception_date, start_time, end_time')
         .eq('professional_id', professionalId)
         .eq('is_available', false);
+      
+      const { data: exceptions, error: exceptError } = exceptionsResult;
 
       if (exceptError) {
         logger.warn('Failed to fetch exceptions, continuing without', {
@@ -173,7 +167,7 @@ class AppointmentService {
         start_time: string | null;
         end_time: string | null;
       }
-      const blockedExceptions: BlockedException[] = (exceptions || []).map((ex: ExceptionData) => ({
+      const blockedExceptions: BlockedException[] = (exceptions || []).map((ex: any) => ({
         date: ex.exception_date,
         startTime: ex.start_time || undefined,
         endTime: ex.end_time || undefined,
@@ -191,7 +185,7 @@ class AppointmentService {
       // All validations passed - create the appointment via RPC to enforce DB-side rules
       const p_date_time = new Date(`${validated.appointmentDate}T${validated.appointmentTime}`).toISOString();
 
-      const { data: rpcData, error: rpcError } = await supabase.rpc('criar_agendamento', {
+      const { data: rpcData, error: rpcError } = await (supabase.rpc as any)('criar_agendamento', {
         p_cliente_nome: validated.clientName,
         p_cliente_telefone: validated.clientPhone,
         p_servico_id: validated.serviceId,
