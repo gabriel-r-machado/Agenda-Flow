@@ -51,7 +51,7 @@ npm run test:coverage
 
 ## Quick start
 
-Prerequisites: Node.js 20+, Supabase account, Resend account (optional).
+Prerequisites: Node.js 22+, Supabase account, Resend account (optional).
 
 ```bash
 git clone https://github.com/gaahfrm/agendaflow.git
